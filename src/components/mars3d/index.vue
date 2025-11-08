@@ -1,25 +1,48 @@
-<!--
-  地图渲染组件 (建议使用mars3d地图的地方都用该组件)
-  @copyright 火星科技 mars3d.cn
-  @author 木遥 2024-12-03
--->
+/**
+ * Mars3D 地图渲染组件
+ * 基于 Vue 3 和 Mars3D 引擎的地图渲染组件，提供地图初始化、销毁和样式定制功能
+ * @author Sogrey
+ * @date 2025-11-08
+ * @lastModify 2025-11-08
+ * @version 1.0.0
+ * @see https://mars3d.cn
+ */
 <template>
   <div :id="withKeyId" class="mars3d-container"></div>
 </template>
+
 <script lang="ts">
 import { defineComponent, onUnmounted, onMounted } from 'vue'
 import MarsEnging from '@/engine/mars3d/index'
-import type { MarsMapOptions } from '@/engine/mars3d/types'
 
+/**
+ * Mars3DMap 组件类
+ * 负责 Mars3D 地图的初始化和生命周期管理
+ * @example 
+ * // 使用示例
+ * <mars3d-map mapKey="main" :mapOptions="mapOptions" />
+ */
 export default defineComponent({
   name: 'mars3d-map',
   inheritAttrs: false,
   props: {
+    /**
+     * 地图标识符
+     * 用于多个地图场景时区分不同地图实例
+     * @type {string}
+     * @default 'main'
+     */
     mapKey: {
       type: String,
       default: 'main',
       required: false,
     },
+    /**
+     * 地图配置选项
+     * Mars3D 地图初始化参数，包含场景、地形、图层等配置
+     * @type {MarsMapOptions}
+     * @default {}
+     */
     mapOptions: {
       type: Object as () => MarsMapOptions,
       default: {},
@@ -27,14 +50,29 @@ export default defineComponent({
     },
   },
   emits: [],
+  /**
+   * 组件 setup 函数
+   * 负责地图容器的初始化和生命周期管理
+   * @param {Object} props - 组件属性
+   * @param {Object} context - 组件上下文
+   * @returns {Object} 响应式数据和方法
+   */
   setup(props, { emit }) {
     const withKeyId = `mars3d-container-${props.mapKey ?? 'main'}`
 
+    /**
+     * 组件挂载时的地图初始化
+     * 在 DOM 元素挂载后执行 Mars3D 地图的初始化
+     */
     onMounted(() => {
       console.log('onMounted', props.mapOptions)
       MarsEnging.getInstance().init(withKeyId, props.mapOptions)
     })
 
+    /**
+     * 组件卸载时的地图销毁
+     * 在组件销毁前清理 Mars3D 地图实例和资源
+     */
     onUnmounted(() => {
       MarsEnging.getInstance().destroy()
     })

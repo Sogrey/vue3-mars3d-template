@@ -7,7 +7,6 @@
  * @version 1.0.0
  */
 import * as mars3d from 'mars3d'
-import type { MarsMapOptions } from './types'
 
 import Camera from './modules/camera.ts'
 import Layer from './modules/layer.ts'

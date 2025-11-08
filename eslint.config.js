@@ -9,7 +9,7 @@ export default [
     name: 'ignores',
     ignores: ['dist/**', 'node_modules/**']
   },
-  
+
   // 全局配置
   {
     name: 'global',
@@ -18,7 +18,7 @@ export default [
       sourceType: 'module'
     }
   },
-  
+
   // JavaScript文件配置
   {
     name: 'javascript',
@@ -30,7 +30,7 @@ export default [
       'prefer-const': 'error'
     }
   },
-  
+
   // TypeScript文件配置
   {
     name: 'typescript',
@@ -52,7 +52,7 @@ export default [
       'prefer-const': 'error'
     }
   },
-  
+
   // Vue文件配置
   {
     name: 'vue',

@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { mars3dPlugin } from "vite-plugin-mars3d"
 import bundleAnalyzer from 'vite-bundle-analyzer'
+import Components from 'unplugin-vue-components/vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode, command }) => {
@@ -22,6 +23,19 @@ export default defineConfig(({ mode, command }) => {
       // 开发环境才启用 Vue DevTools
       ...(isDev ? [vueDevTools()] : []),
       mars3dPlugin(),
+      // 自动导入组件
+      Components({
+        // 组件目录
+        dirs: ['src/components', 'src/components/ui'],
+        // 深度扫描子目录
+        deep: true,
+        // 生成类型声明文件
+        dts: 'src/types/global.d.ts',
+        // 允许导入目录名称
+        directoryAsNamespace: true,
+        // 版本检测
+        version: 3
+      }),
       // 生产环境启用 bundle 分析
       ...(isProduction ? [
         bundleAnalyzer({

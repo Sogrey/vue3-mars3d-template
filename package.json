@@ -49,6 +49,7 @@
     "terser": "^5.16.1",
     "typescript": "~5.9.0",
     "typescript-eslint": "^8.46.3",
+    "unplugin-vue-components": "^30.0.0",
     "vite": "^7.1.11",
     "vite-bundle-analyzer": "^1.2.3",
     "vite-plugin-mars3d": "^4.2.2",
