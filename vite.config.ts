@@ -26,7 +26,7 @@ export default defineConfig(({ mode, command }) => {
       // 自动导入组件
       Components({
         // 组件目录 - 添加所有可能的组件目录
-        dirs: ['src/components', 'src/components/ui', 'src/components/mars3d'],
+        dirs: ['src/components'],
         // 深度扫描子目录
         deep: true,
         // 生成类型声明文件
