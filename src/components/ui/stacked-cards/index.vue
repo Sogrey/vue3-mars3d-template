@@ -32,59 +32,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import type { PropType } from 'vue';
+
 /**
  * stacked-cards 组件
  * 堆叠卡片展开组件，仿照百度地图右下角地图类型切换功能
  * @example
- * 
- * ``` html
  * <stacked-cards :cards="stackedCardsData" @card-click="handleCardClick" />
- * ```
- * 
- * ``` typescript
- * const stackedCardsData = ref([
- *  {
- *      id: 'map',
- *      name: '地图',
- *      image: 'map1.png',
- *      className: 'normal',
- *      switchConfig: {
- *          label: '显示收藏点',
- *          value: true
- *      }
- *  },
- *  {
- *      id: 'satellite',
- *      name: '影像',
- *      image: 'map2.png',
- *      className: 'earth',
- *      switchConfig: {
- *          label: '开启路网',
- *          value: true
- *      }
- *  },
- *  {
- *      id: 'panorama',
- *      name: '全景',
- *      image: 'map3.png',
- *      className: 'satellite'
- *  },
- *  {
- *      id: 'earth',
- *      name: '地球',
- *      image: 'map4.png',
- *      className: 'panorama'
- *  }
- *  ])
- * 
- * const handleCardClick = (card: CardItem, index: number) => {
- *   console.log('handleCardClick', card, index)
- * }
- * ```
- * 
- * 其中：
- * 1. cards 为卡片数据数组，类型为 CardItem[]
- * 2. card-click 为卡片点击事件，参数为卡片数据和索引
+ * @see 参考百度地图 mapType-wrapper 功能
  */
 export default defineComponent({
     name: 'stacked-cards',
@@ -98,13 +52,9 @@ export default defineComponent({
             default: () => []
         }
     },
-    emits: [
-        'card-click' // 卡片点击事件，参数为卡片数据和索引
-    ],
+    emits: ['card-click'],
     setup(props, { emit }) {
-        // 定义展开状态
         const isExpanded = ref(false);
-        // 定义当前激活的卡片索引
         const activeCardIndex = ref(0);
 
         /**
@@ -123,7 +73,7 @@ export default defineComponent({
          */
         const handleCardClick = (card: CardItem, index: number) => {
             activeCardIndex.value = index;
-            emit('card-click', card, index);
+            emit('card-click', { card, index });
         };
 
         return {

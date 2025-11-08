@@ -1,9 +1,11 @@
 import type { App } from 'vue'
 
 import StackedCards from './stacked-cards/index.vue'
+import SearchBar from './search-bar/index.vue'
 
 const components = [
-    StackedCards
+    StackedCards,
+    SearchBar
 ]
 
 /**

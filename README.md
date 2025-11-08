@@ -125,17 +125,34 @@ npm run lint
 
 ### 最新更新 (2025-11-08)
 
-- ✅ **TypeScript 全局类型系统优化**
+- ✅ **组件自动发现系统**
+  - 实现了完全自动化的组件发现功能，无需手动配置组件解析器
+  - 自动扫描 `src/components/` 及其子目录下的所有组件
+  - 自动生成全局类型声明文件 `src/types/global.d.ts`
+  - 支持 Mars3D 地图组件、搜索栏组件、堆叠卡片组件的自动导入
+- ✅ **组件架构重构**
+  - 重构了组件目录结构，将 `mars3d` 组件移入 `mars3d-scene` 目录
+  - 新增了 `search-bar` 搜索栏组件
+  - 优化了 `stacked-cards` 堆叠卡片组件
+- ✅ **Vite 配置优化**
+  - 更新了 `unplugin-vue-components` 插件配置
+  - 移除了不支持的配置属性，确保 TypeScript 类型检查通过
+  - 优化了组件扫描路径和命名空间配置
+- ✅ **TypeScript 类型系统优化**
+  - 修复了 Mars3D 地图配置 JSON 文件与 `MarsMapOptions` 类型的兼容性问题
   - 实现了 Mars3D 地图配置类型的全局声明
   - 新增 `.types.ts` 文件支持全局类型，解决了 `.d.ts` 文件中无法使用 `import` 语句的限制
   - 支持 `MarsMapOptions` 类型在项目中全局可用
 - ✅ **组件文档完善**
-  - 为 Mars3D 地图组件添加了完整的 JSDoc 注释
+  - 为所有组件添加了完整的 JSDoc 注释
   - 遵循项目注释规范，包含文件头、类、函数等详细文档
-- ✅ 修复了 TypeScript 类型检查中的 `eslint__js` 类型定义错误
-- ✅ 修复了 `npm run clean` 脚本中的 `rimraf` 依赖问题
-- ✅ 优化了 TypeScript 配置文件，使用单文件配置替代项目引用模式
-- ✅ 更新了 ESLint 配置，移除了不必要的类型注解
+- ✅ **TypeScript 配置修复**
+  - 修复了 TypeScript 类型检查中的所有错误
+  - 修复了 `npm run clean` 脚本中的依赖问题
+  - 优化了 TypeScript 配置文件，使用单文件配置替代项目引用模式
+- ✅ **代码质量保证**
+  - 更新了 ESLint 配置，移除了不必要的类型注解
+  - 确保所有代码通过 TypeScript 类型检查和 ESLint 规则检查
 
 ## 🤝 贡献指南
 

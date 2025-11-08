@@ -25,16 +25,25 @@ export default defineConfig(({ mode, command }) => {
       mars3dPlugin(),
       // 自动导入组件
       Components({
-        // 组件目录
-        dirs: ['src/components', 'src/components/ui'],
+        // 组件目录 - 添加所有可能的组件目录
+        dirs: ['src/components', 'src/components/ui', 'src/components/mars3d'],
         // 深度扫描子目录
         deep: true,
         // 生成类型声明文件
         dts: 'src/types/global.d.ts',
-        // 允许导入目录名称
-        directoryAsNamespace: true,
+        // 禁用目录命名空间以避免重复定义
+        directoryAsNamespace: false,
         // 版本检测
-        version: 3
+        version: 3,
+        // 自动发现组件，无需手动配置解析器
+        resolvers: [],
+        // 类型声明配置
+        types: [
+          {
+            from: 'vue',
+            names: ['DefineComponent']
+          }
+        ]
       }),
       // 生产环境启用 bundle 分析
       ...(isProduction ? [

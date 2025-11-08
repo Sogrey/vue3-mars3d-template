@@ -11,14 +11,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    IconsIconCommunity: typeof import('./../components/icons/IconCommunity.vue')['default']
-    IconsIconDocumentation: typeof import('./../components/icons/IconDocumentation.vue')['default']
-    IconsIconEcosystem: typeof import('./../components/icons/IconEcosystem.vue')['default']
-    IconsIconSupport: typeof import('./../components/icons/IconSupport.vue')['default']
-    IconsIconTooling: typeof import('./../components/icons/IconTooling.vue')['default']
-    Mars3d: typeof import('./../components/mars3d/index.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
-    UiStackedCards: typeof import('./../components/ui/stacked-cards/index.vue')['default']
+    DefineComponent: typeof import('vue')['DefineComponent']
+    IconCommunity: typeof import('./../components/icons/IconCommunity.vue')['default']
+    IconDocumentation: typeof import('./../components/icons/IconDocumentation.vue')['default']
+    IconEcosystem: typeof import('./../components/icons/IconEcosystem.vue')['default']
+    IconSupport: typeof import('./../components/icons/IconSupport.vue')['default']
+    IconTooling: typeof import('./../components/icons/IconTooling.vue')['default']
+    Mars3dScene: typeof import('./../components/mars3d-scene/index.vue')['default']
+    SearchBar: typeof import('./../components/ui/search-bar/index.vue')['default']
+    StackedCards: typeof import('./../components/ui/stacked-cards/index.vue')['default']
   }
 }

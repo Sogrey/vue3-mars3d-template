@@ -11,7 +11,7 @@ import router from '@/router'
 
 import IconInstall from '@/components/icons'
 import UIInstall from '@/components/ui'
-import Mars3DInstall from '@/components/mars3d'
+import Mars3DInstall from '@/components/mars3d-scene'
 
 const app = createApp(App)
 

@@ -1,12 +1,12 @@
 /**
- * Mars3D 地图渲染组件
- * 基于 Vue 3 和 Mars3D 引擎的地图渲染组件，提供地图初始化、销毁和样式定制功能
- * @author Sogrey
- * @date 2025-11-08
- * @lastModify 2025-11-08
- * @version 1.0.0
- * @see https://mars3d.cn
- */
+* Mars3D 地图渲染组件
+* 基于 Vue 3 和 Mars3D 引擎的地图渲染组件，提供地图初始化、销毁和样式定制功能
+* @author Sogrey
+* @date 2025-11-08
+* @lastModify 2025-11-08
+* @version 1.0.0
+* @see https://mars3d.cn
+*/
 <template>
   <div :id="withKeyId" class="mars3d-container"></div>
 </template>
@@ -16,14 +16,14 @@ import { defineComponent, onUnmounted, onMounted } from 'vue'
 import MarsEnging from '@/engine/mars3d/index'
 
 /**
- * Mars3DMap 组件类
+ * Mars3D Scene 组件类
  * 负责 Mars3D 地图的初始化和生命周期管理
  * @example 
  * // 使用示例
- * <mars3d-map mapKey="main" :mapOptions="mapOptions" />
+ * <mars3d-scene mapKey="main" :mapOptions="mapOptions" />
  */
 export default defineComponent({
-  name: 'mars3d-map',
+  name: 'mars3d-scene',
   inheritAttrs: false,
   props: {
     /**
@@ -58,6 +58,11 @@ export default defineComponent({
    * @returns {Object} 响应式数据和方法
    */
   setup(props, { emit }) {
+    /**
+     * 生成地图容器 ID
+     * 根据地图标识符生成唯一的容器 ID
+     * @returns {string} 地图容器 ID
+     */
     const withKeyId = `mars3d-container-${props.mapKey ?? 'main'}`
 
     /**
@@ -221,7 +226,7 @@ export default defineComponent({
   width: 100%;
 }
 
-.cesium-viewer-toolbar > .cesium-toolbar-button,
+.cesium-viewer-toolbar>.cesium-toolbar-button,
 .cesium-navigationHelpButton-wrapper,
 .cesium-viewer-geocoderContainer {
   margin-bottom: 5px;
@@ -378,21 +383,21 @@ export default defineComponent({
   border-image: url('//data.mars3d.cn/img/control/border.svg') 1 round stretch;
 }
 
-.mars3d-contextmenu-ul > li > a:hover,
-.mars3d-sub-menu > li > a:hover,
-.mars3d-contextmenu-ul > li > a:focus,
-.mars3d-sub-menu > li > a:focus,
-.mars3d-contextmenu-ul > li > .active,
-.mars3d-sub-menu > li > .active {
+.mars3d-contextmenu-ul>li>a:hover,
+.mars3d-sub-menu>li>a:hover,
+.mars3d-contextmenu-ul>li>a:focus,
+.mars3d-sub-menu>li>a:focus,
+.mars3d-contextmenu-ul>li>.active,
+.mars3d-sub-menu>li>.active {
   background-color: var(--mars-hover-color, #3ea6ff);
 }
 
-.mars3d-contextmenu-ul > .active > a,
-.mars3d-sub-menu > .active > a,
-.mars3d-contextmenu-ul > .active > a:hover,
-.mars3d-sub-menu > .active > a:hover,
-.mars3d-contextmenu-ul > .active > a:focus,
-.mars3d-sub-menu > .active > a:focus {
+.mars3d-contextmenu-ul>.active>a,
+.mars3d-sub-menu>.active>a,
+.mars3d-contextmenu-ul>.active>a:hover,
+.mars3d-sub-menu>.active>a:hover,
+.mars3d-contextmenu-ul>.active>a:focus,
+.mars3d-sub-menu>.active>a:focus {
   background-color: var(--mars-hover-color, #3ea6ff);
 }
 
