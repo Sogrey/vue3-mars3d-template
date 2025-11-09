@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import MarsEnging from '@/engine/mars3d/index'
 import Mars3dConfig from '@/configs/mars3d-config.json'
 import Mars3dMapConfig from '@/configs/Mars3dMapConfig.json'
 
@@ -99,6 +100,8 @@ onUnmounted(() => {
  */
 const handleCardClick = (card: CardItem, index: number) => {
   console.log('handleCardClick', card, index)
+
+  MarsEnging.getInstance().Layer.addLayer()
 }
 
 /**
