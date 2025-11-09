@@ -9,24 +9,14 @@
 -->
 
 <template>
-  <div
-    id="stacked-cards-wrapper"
-    :class="{ expand: isExpanded }"
-    @mouseenter="isExpanded = true"
-    @mouseleave="isExpanded = false"
-  >
+  <div id="stacked-cards-wrapper" :class="{ expand: isExpanded }" @mouseenter="isExpanded = true"
+    @mouseleave="isExpanded = false">
     <div id="stacked-cards">
-      <div
-        v-for="(card, index) in cardList"
-        :key="card.id"
-        class="stacked-card"
-        :class="[card.className, { active: activeCardIndex === index }]"
-        :style="{
+      <div v-for="(card, index) in cardList" :key="card.id" class="stacked-card"
+        :class="[card.className, { active: activeCardIndex === index }]" :style="{
           backgroundImage: `url(${card.image})`,
           zIndex: index,
-        }"
-        @click="handleCardClick(card, index)"
-      >
+        }" @click="handleCardClick(card, index)">
         <div v-if="card.switchConfig" class="switch-box">
           <label :title="card.switchConfig.label">
             <input v-model="card.switchConfig.value" type="checkbox" class="switch" @click.stop />
@@ -114,8 +104,9 @@ export default defineComponent({
 }
 
 .expand #stacked-cards {
-  width: 404px;
-  background-color: rgba(0, 0, 0, 0.8);
+  width: 395px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }
 
 .expand .stacked-card {
@@ -141,7 +132,7 @@ export default defineComponent({
 }
 
 .expand .stacked-card:nth-child(4) {
-  right: 6px;
+  right: 10px;
 }
 
 .stacked-card {
@@ -260,9 +251,9 @@ export default defineComponent({
 
 // 响应式适配
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 2dppx),
-  (min-resolution: 192dpi) {
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 2dppx),
+(min-resolution: 192dpi) {
   .stacked-card {
     background-size: contain;
   }

@@ -10,7 +10,7 @@
 <template>
   <mars3d-scene :mapOptions="mapConfig" />
   <div class="content">
-    <search-bar @search="handleSearch" />
+    <search-bar @search="handleSearch" @selectResult="handleSelectSearchResult" />
     <div class="stacked-cards">
       <stacked-cards :cards="stackedCardsData" @card-click="handleCardClick" />
     </div>
@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import Mars3dConfig from '@/configs/mars3d-config.json'
 import Mars3dMapConfig from '@/configs/Mars3dMapConfig.json'
 
 // 导入图片资源
@@ -32,7 +33,7 @@ import map4 from '@/assets/images/stacked-cards/map-4.png'
  * Mars3D 地图初始化配置参数
  * @type {MarsMapOptions}
  */
-const mapConfig = Mars3dMapConfig as MarsMapOptions
+const mapConfig = Mars3dConfig as MarsMapOptions
 
 /**
  * 堆叠卡片数据
@@ -107,6 +108,26 @@ const handleCardClick = (card: CardItem, index: number) => {
  */
 const handleSearch = (search: SearchResult) => {
   console.log('handleSearch', search)
+}
+
+/**
+ * handleSelectSearchResult
+ * 处理搜索结果选择事件
+ * @param {SearchResult} result - 选择的搜索结果对象
+ * @returns {void}
+ * @example
+ * handleSelectSearchResult({
+ *   type: 'fuzzy',
+ *   text: '北京市',
+ *   timestamp: Date.now(),
+ *   location: {
+ *     lng: 116.3974,
+ *     lat: 39.9093
+ *   }
+ * })
+ */
+const handleSelectSearchResult = (result: SearchResult) => {
+  console.log('handleSelectSearchResult', result)
 }
 </script>
 

@@ -18,7 +18,8 @@
 
       <!-- 输入框 -->
       <input v-model="searchText" class="search-input" type="text"
-        :placeholder="searchType === 'fuzzy' ? '请输入搜索内容...' : '请输入坐标(如: 经度,纬度)'" @keyup.enter="handleSearch" />
+        :placeholder="searchType === 'fuzzy' ? '请输入搜索内容...' : '请输入坐标(如: 经度,纬度)'" @keyup.enter="handleSearch"
+        @focus="showResults" @blur="hideResults" />
 
       <!-- 右侧搜索按钮 -->
       <button class="search-button" @click="handleSearch">
@@ -28,6 +29,26 @@
         </svg>
       </button>
     </div>
+
+    <!-- 搜索结果列表 -->
+    <transition name="search-result-fade">
+      <div v-show="showResultList" class="search-result">
+        <div class="search-result-list">
+          <div v-for="(result, index) in searchResults" :key="index" class="search-result-item"
+            @click="selectResult(result)">
+            <div class="result-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+              </svg>
+            </div>
+            <div class="result-content">
+              <div class="result-name">{{ result.text }}</div>
+              <div class="result-address">{{ result.address }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -46,10 +67,97 @@ import type { PropType } from 'vue'
 export default defineComponent({
   name: 'search-bar',
   props: {},
-  emits: ['search'],
+  emits: ['search', 'selectResult'],
   setup(props, { emit }) {
     const searchType = ref<'fuzzy' | 'coordinate'>('fuzzy')
     const searchText = ref('')
+    const showResultList = ref(false)
+
+    // 测试搜索结果数据 
+    const searchResults = ref([
+      {
+        text: '北京市',
+        address: '北京市东城区正义路2号',
+        location: {
+          lng: 116.3974,
+          lat: 39.9093
+        }
+      },
+      {
+        text: '天安门广场',
+        address: '北京市东城区东长安街天安门广场',
+        location: {
+          lng: 116.3975,
+          lat: 39.9087
+        }
+      },
+      {
+        text: '故宫博物院',
+        address: '北京市东城区景山前街4号',
+        location: {
+          lng: 116.3972,
+          lat: 39.9175
+        }
+      },
+      {
+        text: '颐和园',
+        address: '北京市海淀区新建宫门路19号',
+        location: {
+          lng: 116.2732,
+          lat: 40.0025
+        }
+      },
+      {
+        text: '鸟巢国家体育场',
+        address: '北京市朝阳区国家体育场南路1号',
+        location: {
+          lng: 116.3965,
+          lat: 39.9928
+        }
+      }
+    ])
+
+    /**
+     * showResults
+     * 显示搜索结果列表
+     * @returns {void}
+     */
+    const showResults = () => {
+      showResultList.value = true
+    }
+
+    /**
+     * hideResults
+     * 隐藏搜索结果列表
+     * @returns {void}
+     */
+    const hideResults = () => {
+      // 延迟隐藏以避免点击事件被中断
+      setTimeout(() => {
+        showResultList.value = false
+      }, 200)
+    }
+
+    /**
+     * selectResult
+     * 选择搜索结果项
+     * @param {Object} result - 搜索结果对象
+     * @returns {void}
+     */
+    const selectResult = (result: SearchResult) => {
+      searchText.value = result.text.trim()
+      showResultList.value = false
+
+      const searchResult: SearchResult = {
+        type: searchType.value,
+        text: result.text.trim(),
+        timestamp: Date.now(),
+        address: result.address,
+        location: result.location
+      }
+
+      emit('selectResult', searchResult)
+    }
 
     /**
      * handleSearch
@@ -74,7 +182,12 @@ export default defineComponent({
     return {
       searchType,
       searchText,
+      showResultList,
+      searchResults,
       handleSearch,
+      showResults,
+      hideResults,
+      selectResult,
     }
   },
 })
@@ -83,13 +196,14 @@ export default defineComponent({
 <style lang="less" scoped>
 .search-bar {
   width: 425px;
-  height: 40px;
+  min-height: 40px;
   background: #ffffff;
   margin: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   border: 1px solid #3388ff;
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
 
   &:hover {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
@@ -102,8 +216,9 @@ export default defineComponent({
   .search-container {
     display: flex;
     align-items: center;
-    height: 100%;
+    height: 40px;
     gap: 0;
+    z-index: 10;
 
     .search-type {
       border: none;
@@ -174,6 +289,93 @@ export default defineComponent({
       }
     }
   }
+
+  /* 搜索结果列表样式 */
+  .search-result {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 4px 4px;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 5px;
+
+    .search-result-list {
+      padding: 8px 0;
+
+      .search-result-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        .result-icon {
+          margin-right: 12px;
+          color: #3388ff;
+          display: flex;
+          align-items: center;
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .result-content {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+
+          .result-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+          }
+
+          .result-address {
+            font-size: 12px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 搜索结果动画效果 */
+.search-result-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.search-result-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.search-result-fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.search-result-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* 响应式适配 */
