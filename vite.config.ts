@@ -65,7 +65,8 @@ export default defineConfig(({ mode, command }) => {
 
     // 开发服务器配置
     server: {
-      port: 3000,
+      port: 5173,
+      strictPort: false, // 允许端口被占用时自动选择其他端口
       host: true,
       open: true,
       cors: true,

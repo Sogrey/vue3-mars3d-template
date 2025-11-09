@@ -17,8 +17,8 @@
  * @property {boolean} value - 开关状态值
  */
 declare interface SwitchConfig {
-    label: string;
-    value: boolean;
+  label: string
+  value: boolean
 }
 
 /**
@@ -31,9 +31,9 @@ declare interface SwitchConfig {
  * @property {SwitchConfig} [switchConfig] - 开关配置（可选）
  */
 declare interface CardItem {
-    id: string;
-    name: string;
-    image: string;
-    className?: string;
-    switchConfig?: SwitchConfig;
+  id: string
+  name: string
+  image: string
+  className?: string
+  switchConfig?: SwitchConfig
 }

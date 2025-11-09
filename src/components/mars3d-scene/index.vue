@@ -1,12 +1,12 @@
-/**
-* Mars3D 地图渲染组件
-* 基于 Vue 3 和 Mars3D 引擎的地图渲染组件，提供地图初始化、销毁和样式定制功能
+<!--
+* mars3d-scene 组件
+* Mars3D 地图场景组件，负责三维地图的容器管理和生命周期控制
 * @author Sogrey
 * @date 2025-11-08
 * @lastModify 2025-11-08
 * @version 1.0.0
-* @see https://mars3d.cn
-*/
+-->
+
 <template>
   <div :id="withKeyId" class="mars3d-container"></div>
 </template>
@@ -18,7 +18,7 @@ import MarsEnging from '@/engine/mars3d/index'
 /**
  * Mars3D Scene 组件类
  * 负责 Mars3D 地图的初始化和生命周期管理
- * @example 
+ * @example
  * // 使用示例
  * <mars3d-scene mapKey="main" :mapOptions="mapOptions" />
  */

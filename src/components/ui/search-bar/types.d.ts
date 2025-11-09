@@ -1,4 +1,3 @@
-
 /**
  * 搜索栏组件类型定义文件
  * 定义搜索栏组件相关的全局类型声明
@@ -24,7 +23,7 @@
  * }
  */
 declare interface SearchResult {
-    type: string;
-    text: string;
-    timestamp: number;
+  type: string
+  text: string
+  timestamp: number
 }

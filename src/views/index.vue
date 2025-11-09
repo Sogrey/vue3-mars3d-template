@@ -1,12 +1,12 @@
-/**
-* 主页面组件
-* Vue 3 + Mars3D 地图应用主页面，集成地图组件、搜索栏和堆叠卡片组件
-* @author Sogrey
-* @date 2025-11-08
-* @lastModify 2025-11-08
-* @version 1.0.0
-* @see https://mars3d.cn
-*/
+<!-- 
+* 主页面组件 
+* Vue 3 + Mars3D 地图应用主页面，集成地图组件、搜索栏和堆叠卡片组件 
+* @author Sogrey 
+* @date 2025-11-08 
+* @lastModify 2025-11-08 
+* @version 1.0.0 
+* @see https://mars3d.cn 
+-->
 <template>
   <mars3d-scene :mapOptions="mapConfig" />
   <div class="content">
@@ -22,10 +22,10 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import Mars3dMapConfig from '@/configs/Mars3dMapConfig.json'
 
 // 导入图片资源
-import map1 from '@/assets/images/stacked-cards/map-1.png';
-import map2 from '@/assets/images/stacked-cards/map-2.png';
-import map3 from '@/assets/images/stacked-cards/map-3.png';
-import map4 from '@/assets/images/stacked-cards/map-4.png';
+import map1 from '@/assets/images/stacked-cards/map-1.png'
+import map2 from '@/assets/images/stacked-cards/map-2.png'
+import map3 from '@/assets/images/stacked-cards/map-3.png'
+import map4 from '@/assets/images/stacked-cards/map-4.png'
 
 /**
  * 地图配置
@@ -47,8 +47,8 @@ const stackedCardsData = ref([
     className: 'normal',
     switchConfig: {
       label: '显示收藏点',
-      value: true
-    }
+      value: true,
+    },
   },
   {
     id: 'satellite',
@@ -57,21 +57,21 @@ const stackedCardsData = ref([
     className: 'earth',
     switchConfig: {
       label: '开启路网',
-      value: true
-    }
+      value: true,
+    },
   },
   {
     id: 'panorama',
     name: '全景',
     image: map3,
-    className: 'satellite'
+    className: 'satellite',
   },
   {
     id: 'earth',
     name: '地球',
     image: map4,
-    className: 'panorama'
-  }
+    className: 'panorama',
+  },
 ])
 
 /**
@@ -108,7 +108,6 @@ const handleCardClick = (card: CardItem, index: number) => {
 const handleSearch = (search: SearchResult) => {
   console.log('handleSearch', search)
 }
-
 </script>
 
 <style lang="less" scoped>
