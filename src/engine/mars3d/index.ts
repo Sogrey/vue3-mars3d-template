@@ -157,10 +157,55 @@ export default class MarsEnging {
     console.log(Utils.uuid('Sogrey'))
   }
 
+  /**
+   * destroy
+   * 销毁 Mars3D 地图实例，释放资源并清理内存
+   * 安全地销毁地图实例，防止内存泄漏和资源占用
+   * @example
+   * ```typescript
+   * // 销毁地图实例
+   * const marsEngine = MarsEnging.getInstance();
+   * marsEngine.destroy();
+   * 
+   * // Vue 组件中使用
+   * onUnmounted(() => {
+   *   const marsEngine = MarsEnging.getInstance();
+   *   marsEngine.destroy();
+   * });
+   * ```
+   */
   destroy() {
     if (this._map) {
       this._map.destroy()
       this._map = null
     }
+  }
+
+  /**
+   * isInit
+   * 检查 Mars3D 地图是否已初始化
+   * 返回布尔值表示地图实例是否存在，用于状态检查
+   * @return {boolean} 返回地图是否已初始化的布尔值
+   * @example
+   * ```typescript
+   * // 检查地图初始化状态
+   * const marsEngine = MarsEnging.getInstance();
+   * if (marsEngine.isInit()) {
+   *   console.log("地图已初始化");
+   * } else {
+   *   console.log("地图未初始化");
+   * }
+   * 
+   * // Vue 组件中使用
+   * const handleMapAction = () => {
+   *   if (marsEngine.isInit()) {
+   *     // 执行地图操作
+   *     marsEngine.map?.flyTo({ lat: 39.9, lng: 116.3 });
+   *   }
+   * };
+   * ```
+   */
+  isInit() {
+    return this._map !== null
   }
 }

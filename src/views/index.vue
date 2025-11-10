@@ -101,7 +101,7 @@ onUnmounted(() => {
 const handleCardClick = (card: CardItem, index: number) => {
   console.log('handleCardClick', card, index)
 
-  MarsEnging.getInstance().Layer.addLayer()
+  // MarsEnging.getInstance().Layer.addLayer()
 }
 
 /**
