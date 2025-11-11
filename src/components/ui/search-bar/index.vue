@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, useAttrs, useSlots  } from 'vue'
 import type { PropType } from 'vue'
 
 /**
@@ -68,7 +68,9 @@ export default defineComponent({
   name: 'search-bar',
   props: {},
   emits: ['search', 'selectResult'],
-  setup(props, { emit }) {
+  setup(props, { emit }) {    
+    const attrs = useAttrs();
+    const slots = useSlots();
     const searchType = ref<'fuzzy' | 'coordinate'>('fuzzy')
     const searchText = ref('')
     const showResultList = ref(false)
@@ -180,6 +182,7 @@ export default defineComponent({
     }
 
     return {
+      attrs, slots,
       searchType,
       searchText,
       showResultList,

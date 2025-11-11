@@ -125,6 +125,12 @@ npm run lint
 
 ### 最新更新 (2025-11-10)
 
+- ✅ **Mars3D 引擎模块注释完善**
+  - 为 Camera、Effect、Measurement 等模块添加完整注释和功能规划
+  - 完善了 mars3d-scene、search-bar、stacked-cards 组件的 HTML 注释文档
+  - 遵循项目 JSDoc 注释规范，提供详细的组件使用示例和参考文档
+  - 优化了 Mars3D 引擎各模块的 API 文档完整性
+
 - ✅ **Mars3D 引擎核心方法注释完善**
   - 为 `destroy()` 方法添加完整的 JSDoc 注释，包含函数描述、使用示例和 Vue 组件使用场景
   - 为 `isInit()` 方法添加完整的 JSDoc 注释，包含函数描述、返回值说明、使用示例和 Vue 组件使用场景

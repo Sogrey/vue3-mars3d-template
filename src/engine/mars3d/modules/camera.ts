@@ -6,4 +6,8 @@ export default class Camera {
   constructor(engine: MarsEnging) {
     this.engine = engine
   }
+
+  // flyTo
+  // setView
+  
 }

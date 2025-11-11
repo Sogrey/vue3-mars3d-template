@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, useAttrs, useSlots } from 'vue'
 import type { PropType } from 'vue'
 
 /**
@@ -54,6 +54,9 @@ export default defineComponent({
   },
   emits: ['card-click'],
   setup(props, { emit }) {
+    const attrs = useAttrs();
+    const slots = useSlots();
+
     const isExpanded = ref(false)
     const activeCardIndex = ref(0)
 
@@ -75,6 +78,7 @@ export default defineComponent({
     }
 
     return {
+      attrs, slots,
       isExpanded,
       activeCardIndex,
       cardList,

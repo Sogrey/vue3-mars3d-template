@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, onMounted } from 'vue'
+import { defineComponent, onUnmounted, onMounted, useAttrs, useSlots } from 'vue'
 import MarsEnging from '@/engine/mars3d/index'
 
 /**
@@ -58,6 +58,8 @@ export default defineComponent({
    * @returns {Object} 响应式数据和方法
    */
   setup(props, { emit }) {
+    const attrs = useAttrs();
+    const slots = useSlots();
     /**
      * 生成地图容器 ID
      * 根据地图标识符生成唯一的容器 ID
@@ -83,6 +85,7 @@ export default defineComponent({
     })
 
     return {
+      attrs, slots,
       withKeyId,
     }
   },
