@@ -52,7 +52,7 @@ export const uuid = (prefix: string = '') => {
 
   let uuid = template
     .replace(/[xy]/g, function (c) {
-      var r = (Math.random() * 16) | 0,
+      const r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
     })
