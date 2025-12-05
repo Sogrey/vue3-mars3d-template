@@ -3,20 +3,29 @@
  * 堆叠卡片组件主文件
  * @author Sogrey
  * @date 2025-06-01 00:00:00
- * @lastModify 2025-11-08 00:00:00
- * @version 1.0.0
+ * @lastModify 2025-12-05 00:00:00
+ * @version 1.0.1
  * @see 参考百度地图 mapType-wrapper 功能
 -->
 
 <template>
-  <div id="stacked-cards-wrapper" :class="{ expand: isExpanded }" @mouseenter="isExpanded = true"
+  <div id="stacked-cards-wrapper" :class="{ expand: isExpanded }" role="toolbar"
+    :aria-label="`地图类型切换器，当前选中：${cardList[activeCardIndex]?.name || '无'}`" @mouseenter="isExpanded = true"
     @mouseleave="isExpanded = false">
-    <div id="stacked-cards">
+    <div id="stacked-cards"
+      :style="{ width: isExpanded ? expandStyles.backgroundWidth + 'px' : CARD_CONFIG.collapsedWidth + 'px' }"
+      :aria-expanded="isExpanded">
       <div v-for="(card, index) in cardList" :key="card.id" class="stacked-card"
-        :class="[card.className, { active: activeCardIndex === index }]" :style="{
+        :class="[card.className, { active: activeCardIndex === index }]" role="button"
+        :aria-pressed="activeCardIndex === index" :aria-label="card.name" :title="card.name" tabindex="0" :style="{
           backgroundImage: `url(${card.image})`,
-          zIndex: index,
-        }" @click="handleCardClick(card, index)">
+          right: isExpanded ? ((expandStyles.positions[index] || 0) + CARD_CONFIG.horizontalMargin) + 'px' : '20px',
+          zIndex: isExpanded ? 0 : (activeCardIndex === index ? 10 : 0),
+        }" @keydown.enter="handleCardClick(card, index)" 
+        @keydown.space.prevent="handleCardClick(card, index)"
+        @keydown.left.prevent="handleKeyboardNavigation(-1)"
+        @keydown.right.prevent="handleKeyboardNavigation(1)"
+        @click="handleCardClick(card, index)">
         <div v-if="card.switchConfig" class="switch-box">
           <label :title="card.switchConfig.label">
             <input v-model="card.switchConfig.value" type="checkbox" class="switch" @click.stop />
@@ -30,8 +39,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useAttrs, useSlots } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import type { PropType } from 'vue'
+
+/**
+ * 卡片项目接口定义
+ */
+interface CardItem {
+  /** 卡片唯一标识 */
+  id: string | number
+  /** 卡片名称 */
+  name: string
+  /** 卡片背景图片URL */
+  image: string
+  /** 自定义CSS类名 */
+  className?: string
+  /** 开关配置 */
+  switchConfig?: {
+    label: string
+    value: boolean
+  }
+}
 
 /**
  * stacked-cards 组件
@@ -54,17 +82,61 @@ export default defineComponent({
   },
   emits: ['card-click'],
   setup(props, { emit }) {
-    const attrs = useAttrs();
-    const slots = useSlots();
 
     const isExpanded = ref(false)
     const activeCardIndex = ref(0)
 
     /**
-     * 使用传入的卡片数据或默认数据
-     * @type {Ref<CardItem[]>}
+     * 使用传入的卡片数据，避免响应式问题
+     * 直接使用computed计算，无需额外的ref和watch
      */
-    const cardList = ref<CardItem[]>(props.cards.length > 0 ? props.cards : [])
+    const cardList = computed(() => [...props.cards])
+
+    // 组件常量配置
+    const CARD_CONFIG = {
+      width: 86,
+      spacing: 16,
+      horizontalMargin: 16,
+      collapsedWidth: 110,
+      height: 60
+    } as const
+
+    /**
+     * 计算卡片展开时的样式
+     * @returns {Object} 包含背景宽度和卡片位置的对象
+     */
+    const expandStyles = computed(() => {
+      const cards = cardList.value
+      const cardCount = cards.length
+      
+      // 空数组保护：立即返回默认值
+      if (cardCount === 0) return { backgroundWidth: CARD_CONFIG.collapsedWidth, positions: [] }
+
+      // 边界检查：确保索引在有效范围内
+      if (activeCardIndex.value >= cardCount) {
+        activeCardIndex.value = Math.max(0, cardCount - 1)
+      }
+
+      const { width: cardWidth, spacing: cardSpacing, horizontalMargin } = CARD_CONFIG
+
+      // 计算总宽度：左右边距 + 卡片总数 × 卡片宽度 + (卡片总数-1) × 卡片间距
+      const totalWidth = horizontalMargin * 2 + cardCount * cardWidth + (cardCount - 1) * cardSpacing
+
+      // 计算每个卡片的位置（从右到左，第一个卡片在最右边）
+      // 位置是相对于背景内容区域的
+      const positions = []
+      for (let i = 0; i < cardCount; i++) {
+        // 第一个卡片（索引0）在最右边，位置是0
+        // 后续卡片向左展开，每个卡片向左偏移 卡片宽度+间距
+        const position = i * (cardWidth + cardSpacing)
+        positions.push(position)
+      }
+
+      return {
+        backgroundWidth: totalWidth,
+        positions: positions
+      }
+    })
 
     /**
      * handleCardClick
@@ -77,12 +149,33 @@ export default defineComponent({
       emit('card-click', { card, index })
     }
 
+    /**
+     * handleKeyboardNavigation
+     * 处理键盘导航
+     * @param {number} direction - 导航方向：-1 向左，1 向右
+     */
+    const handleKeyboardNavigation = (direction: number) => {
+      const cardCount = cardList.value.length
+      if (cardCount === 0) return
+      
+      const newIndex = activeCardIndex.value + direction
+      activeCardIndex.value = (newIndex + cardCount) % cardCount
+      
+      // 触发选中事件
+      const selectedCard = cardList.value[activeCardIndex.value]
+      if (selectedCard) {
+        emit('card-click', { card: selectedCard, index: activeCardIndex.value })
+      }
+    }
+
     return {
-      attrs, slots,
       isExpanded,
       activeCardIndex,
       cardList,
+      expandStyles,
+      CARD_CONFIG,
       handleCardClick,
+      handleKeyboardNavigation,
     }
   },
 })
@@ -91,10 +184,9 @@ export default defineComponent({
 <style lang="less" scoped>
 #stacked-cards-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: 32px;
   right: 0;
   z-index: 1;
-  bottom: 32px;
 }
 
 #stacked-cards {
@@ -102,46 +194,34 @@ export default defineComponent({
   cursor: pointer;
   transition-property: width, background-color;
   transition-duration: 0.4s;
-  width: 110px;
+  width: v-bind('CARD_CONFIG.collapsedWidth + "px"');
   background-color: rgba(0, 0, 0, 0);
   position: relative;
 }
 
 .expand #stacked-cards {
-  width: 395px;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
+  position: relative;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .expand .stacked-card {
   border: 1px solid rgba(255, 255, 255, 0);
   overflow: hidden;
+  position: absolute !important;
 }
 
 .expand .stacked-card.active {
   border: 3px solid #3385ff;
 }
 
-// 动态设置展开状态下的卡片位置
-.expand .stacked-card:nth-child(1) {
-  right: 298px;
-}
 
-.expand .stacked-card:nth-child(2) {
-  right: 202px;
-}
-
-.expand .stacked-card:nth-child(3) {
-  right: 106px;
-}
-
-.expand .stacked-card:nth-child(4) {
-  right: 10px;
-}
 
 .stacked-card {
-  height: 60px;
-  width: 86px;
+  height: v-bind('CARD_CONFIG.height + "px"');
+  width: v-bind('CARD_CONFIG.width + "px"');
   position: absolute;
   border-radius: 5px;
   top: 10px;
@@ -149,8 +229,7 @@ export default defineComponent({
   border: 1px solid rgba(153, 153, 153, 0.42);
   background-size: cover;
   background-position: center;
-  transition-property: right, border-color;
-  transition-duration: 0.4s;
+  transition: right 0.4s ease-out, z-index 0.4s, border-color 0.4s;
   overflow: hidden;
 
   span {
@@ -189,37 +268,10 @@ export default defineComponent({
   }
 }
 
-// 动态设置折叠状态下的卡片位置
-// 默认位置的卡片，确保基础层级
-.stacked-card {
-  transition: right 0.4s, z-index 0.4s;
-}
-
+// 收起状态下的卡片位置
 // 当前选中的卡片在收起时放在最上面
-.stacked-card.active {
-  z-index: 10 !important;
-  right: 20px !important;
-}
-
-// 其他非选中卡片按照原有顺序排列
-.stacked-card:not(.active) {
-  z-index: 4;
+#stacked-cards-wrapper:not(.expand) .stacked-card {
   right: 20px;
-}
-
-.stacked-card:not(.active):nth-child(1) {
-  z-index: 3;
-  right: 15px;
-}
-
-.stacked-card:not(.active):nth-child(2) {
-  z-index: 2;
-  right: 10px;
-}
-
-.stacked-card:not(.active):nth-child(3) {
-  z-index: 1;
-  right: 5px;
 }
 
 .switch-box {
