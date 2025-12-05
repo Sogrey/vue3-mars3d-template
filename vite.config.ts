@@ -16,7 +16,7 @@ export default defineConfig(({ mode, command }) => {
 
   return {
     // 基础路径 - 生产环境可能需要配置为 /your-project-name/
-    base: isProduction ? './' : '/',
+    base: isProduction ? './vue3-mars3d-template' : '/vue3-mars3d-template',
 
     plugins: [
       vue(),

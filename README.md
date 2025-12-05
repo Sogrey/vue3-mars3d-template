@@ -125,6 +125,20 @@ npm run lint
 
 ### 最新更新 (2025-12-05)
 
+- ✅ **GitHub Pages 部署系统重构**
+  - 重构 GitHub Actions 工作流，分离构建和部署作业，提升部署可靠性
+  - 添加 GitHub Pages 配置检测和错误处理，提供清晰的问题诊断信息
+  - 为 Pull Request 创建预览构建作业，不影响主分支部署流程
+  - 新增详细的配置指南文档 `.github/PAGES_SETUP.md`，包含步骤说明和故障排除
+  - 改进构建状态报告，提供详细的构建信息和错误提示
+
+- ✅ **GitHub Actions 工作流优化**
+  - 实现双作业模式：`build-and-deploy`（主分支部署）和 `build-preview`（PR预览）
+  - 添加 `continue-on-error` 错误处理机制，避免配置问题阻塞整个流程
+  - 自动检测 GitHub Pages 配置状态，失败时提供解决方案和操作指导
+  - 支持 PR 构建摘要报告，显示构建时间、版本等元信息
+  - 优化权限配置和并发控制，确保部署流程安全可靠
+
 - ✅ **堆叠卡片组件代码质量全面提升**
   - 修复了所有 TypeScript 类型错误和 ESLint 警告，代码符合 Vue.js 最佳实践
   - 移除了未使用的导入（`watch`, `onUnmounted`, `useAttrs`, `useSlots`），优化了 bundle 大小
@@ -228,9 +242,53 @@ npm run lint
   - 更新了 ESLint 配置，移除了不必要的类型注解
   - 确保所有代码通过 TypeScript 类型检查和 ESLint 规则检查
 
+## 🚀 CI/CD 部署
+
+### GitHub Actions 自动部署
+
+项目使用 GitHub Actions 实现 CI/CD 自动化流程：
+
+#### 🔄 工作流特性
+
+- **双作业模式**: 主分支部署 + PR 预览构建
+- **智能检测**: 自动检测 GitHub Pages 配置状态
+- **错误处理**: 提供详细的错误信息和解决方案
+- **权限管理**: 安全的权限配置和并发控制
+
+#### 📋 部署条件
+
+- **主分支推送**: 自动触发完整部署流程
+- **Pull Request**: 创建预览构建，不部署到 Pages
+- **权限要求**: 需要配置 GitHub Actions 和 GitHub Pages 权限
+
+#### ⚙️ 配置步骤
+
+详细的配置指南请参考 [`.github/PAGES_SETUP.md`](https://github.com/Sogrey/vue3-mars3d-template/blob/main/.github/PAGES_SETUP.md)
+
+#### 📊 部署状态
+
+- **构建状态**: 在 Actions 标签中查看详细日志
+- **部署地址**: 成功部署后可在 Settings → Pages 中查看
+- **错误诊断**: 自动检测并提供配置问题的解决方案
+
 ## 🤝 贡献指南
 
 欢迎提交 Issue 和 Pull Request 来改进这个模板。
+
+### 贡献流程
+
+1. Fork 本仓库
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
+
+### 代码规范
+
+- 遵循现有的代码风格和注释规范
+- 确保所有 TypeScript 类型检查通过
+- 运行 `npm run lint` 修复代码格式问题
+- 为新功能和组件添加完整的 JSDoc 注释
 
 ## 📄 许可证
 
