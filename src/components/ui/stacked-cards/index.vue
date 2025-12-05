@@ -190,22 +190,34 @@ export default defineComponent({
 }
 
 // 动态设置折叠状态下的卡片位置
-.stacked-card:nth-child(1) {
+// 默认位置的卡片，确保基础层级
+.stacked-card {
+  transition: right 0.4s, z-index 0.4s;
+}
+
+// 当前选中的卡片在收起时放在最上面
+.stacked-card.active {
+  z-index: 10 !important;
+  right: 20px !important;
+}
+
+// 其他非选中卡片按照原有顺序排列
+.stacked-card:not(.active) {
   z-index: 4;
   right: 20px;
 }
 
-.stacked-card:nth-child(2) {
+.stacked-card:not(.active):nth-child(1) {
   z-index: 3;
   right: 15px;
 }
 
-.stacked-card:nth-child(3) {
+.stacked-card:not(.active):nth-child(2) {
   z-index: 2;
   right: 10px;
 }
 
-.stacked-card:nth-child(4) {
+.stacked-card:not(.active):nth-child(3) {
   z-index: 1;
   right: 5px;
 }
