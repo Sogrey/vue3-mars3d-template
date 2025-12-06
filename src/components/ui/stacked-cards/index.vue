@@ -21,10 +21,8 @@
           backgroundImage: `url(${card.image})`,
           right: isExpanded ? ((expandStyles.positions[index] || 0) + CARD_CONFIG.horizontalMargin) + 'px' : '20px',
           zIndex: isExpanded ? 0 : (activeCardIndex === index ? 10 : 0),
-        }" @keydown.enter="handleCardClick(card, index)" 
-        @keydown.space.prevent="handleCardClick(card, index)"
-        @keydown.left.prevent="handleKeyboardNavigation(-1)"
-        @keydown.right.prevent="handleKeyboardNavigation(1)"
+        }" @keydown.enter="handleCardClick(card, index)" @keydown.space.prevent="handleCardClick(card, index)"
+        @keydown.left.prevent="handleKeyboardNavigation(-1)" @keydown.right.prevent="handleKeyboardNavigation(1)"
         @click="handleCardClick(card, index)">
         <div v-if="card.switchConfig" class="switch-box">
           <label :title="card.switchConfig.label">
@@ -108,7 +106,7 @@ export default defineComponent({
     const expandStyles = computed(() => {
       const cards = cardList.value
       const cardCount = cards.length
-      
+
       // 空数组保护：立即返回默认值
       if (cardCount === 0) return { backgroundWidth: CARD_CONFIG.collapsedWidth, positions: [] }
 
@@ -157,10 +155,10 @@ export default defineComponent({
     const handleKeyboardNavigation = (direction: number) => {
       const cardCount = cardList.value.length
       if (cardCount === 0) return
-      
+
       const newIndex = activeCardIndex.value + direction
       activeCardIndex.value = (newIndex + cardCount) % cardCount
-      
+
       // 触发选中事件
       const selectedCard = cardList.value[activeCardIndex.value]
       if (selectedCard) {
@@ -192,8 +190,7 @@ export default defineComponent({
 #stacked-cards {
   height: 80px;
   cursor: pointer;
-  transition-property: width, background-color;
-  transition-duration: 0.4s;
+  transition: width 0.4s ease-out, background-color 0.3s ease-out;
   width: v-bind('CARD_CONFIG.collapsedWidth + "px"');
   background-color: rgba(0, 0, 0, 0);
   position: relative;
@@ -229,7 +226,7 @@ export default defineComponent({
   border: 1px solid rgba(153, 153, 153, 0.42);
   background-size: cover;
   background-position: center;
-  transition: right 0.4s ease-out, z-index 0.4s, border-color 0.4s;
+  transition: right 0.4s ease-out, z-index 0.4s, border-color 0.3s ease-out;
   overflow: hidden;
 
   span {

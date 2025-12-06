@@ -74,18 +74,6 @@ const stackedCardsData = ref([
     image: map4,
     className: 'panorama',
   },
-  {
-    id: 'panorama1',
-    name: '全景',
-    image: map3,
-    className: 'satellite',
-  },
-  {
-    id: 'earth1',
-    name: '地球',
-    image: map4,
-    className: 'panorama',
-  },
 ])
 
 /**
