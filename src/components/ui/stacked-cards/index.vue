@@ -3,8 +3,8 @@
  * 堆叠卡片组件主文件
  * @author Sogrey
  * @date 2025-06-01 00:00:00
- * @lastModify 2025-12-05 00:00:00
- * @version 1.0.1
+ * @lastModify 2025-12-06 00:00:00
+ * @version 1.0.2
  * @see 参考百度地图 mapType-wrapper 功能
 -->
 
@@ -17,17 +17,17 @@
       :aria-expanded="isExpanded">
       <div v-for="(card, index) in cardList" :key="card.id" class="stacked-card"
         :class="[card.className, { active: activeCardIndex === index }]" role="button"
-        :aria-pressed="activeCardIndex === index" :aria-label="card.name" :title="card.name" tabindex="0" :style="{
+        :aria-pressed="activeCardIndex === index" :aria-label="card.name" :title="card.name" tabindex="0"         :style="{
           backgroundImage: `url(${card.image})`,
-          right: isExpanded ? ((expandStyles.positions[index] || 0) + CARD_CONFIG.horizontalMargin) + 'px' : '20px',
+          left: isExpanded ? ((expandStyles.positions[index] || 0) + CARD_CONFIG.horizontalMargin) + 'px' : '20px',
           zIndex: isExpanded ? 0 : (activeCardIndex === index ? 10 : 0),
         }" @keydown.enter="handleCardClick(card, index)" @keydown.space.prevent="handleCardClick(card, index)"
         @keydown.left.prevent="handleKeyboardNavigation(-1)" @keydown.right.prevent="handleKeyboardNavigation(1)"
         @click="handleCardClick(card, index)">
         <div v-if="card.switchConfig" class="switch-box">
-          <label :title="card.switchConfig.label">
-            <input v-model="card.switchConfig.value" type="checkbox" class="switch" @click.stop />
-            <p>{{ card.switchConfig.label }}</p>
+          <label :title="card.switchConfig.name">
+            <input v-model="card.switchConfig.status" type="checkbox" class="switch" @click.stop />
+            <p>{{ card.switchConfig.name }}</p>
           </label>
         </div>
         <span>{{ card.name }}</span>
@@ -39,6 +39,18 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import type { PropType } from 'vue'
+
+/**
+ * 开关配置接口定义
+ */
+interface SwitchConfig {
+  /** 开关标签文本 */
+  name: string
+  /** 开关状态值 */
+  status: boolean
+  /** 其他额外参数 */
+  [key: string]: any
+}
 
 /**
  * 卡片项目接口定义
@@ -53,10 +65,9 @@ interface CardItem {
   /** 自定义CSS类名 */
   className?: string
   /** 开关配置 */
-  switchConfig?: {
-    label: string
-    value: boolean
-  }
+  switchConfig?: SwitchConfig
+  /** 其他额外参数 */
+  [key: string]: any
 }
 
 /**
@@ -120,12 +131,12 @@ export default defineComponent({
       // 计算总宽度：左右边距 + 卡片总数 × 卡片宽度 + (卡片总数-1) × 卡片间距
       const totalWidth = horizontalMargin * 2 + cardCount * cardWidth + (cardCount - 1) * cardSpacing
 
-      // 计算每个卡片的位置（从右到左，第一个卡片在最右边）
+      // 计算每个卡片的位置（从左到右，按照数据顺序排列）
       // 位置是相对于背景内容区域的
       const positions = []
       for (let i = 0; i < cardCount; i++) {
-        // 第一个卡片（索引0）在最右边，位置是0
-        // 后续卡片向左展开，每个卡片向左偏移 卡片宽度+间距
+        // 第一个卡片（索引0）在最左边，后续卡片向右展开
+        // 计算从左到右的位置：索引 × (卡片宽度+间距)
         const position = i * (cardWidth + cardSpacing)
         positions.push(position)
       }
@@ -144,7 +155,7 @@ export default defineComponent({
      */
     const handleCardClick = (card: CardItem, index: number) => {
       activeCardIndex.value = index
-      emit('card-click', { card, index })
+      emit('card-click', card, index)
     }
 
     /**
@@ -185,6 +196,8 @@ export default defineComponent({
   bottom: 32px;
   right: 0;
   z-index: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #stacked-cards {
@@ -226,7 +239,7 @@ export default defineComponent({
   border: 1px solid rgba(153, 153, 153, 0.42);
   background-size: cover;
   background-position: center;
-  transition: right 0.4s ease-out, z-index 0.4s, border-color 0.3s ease-out;
+  transition: left 0.4s ease-out, z-index 0.4s, border-color 0.3s ease-out;
   overflow: hidden;
 
   span {
@@ -268,7 +281,7 @@ export default defineComponent({
 // 收起状态下的卡片位置
 // 当前选中的卡片在收起时放在最上面
 #stacked-cards-wrapper:not(.expand) .stacked-card {
-  right: 20px;
+  left: 20px;
 }
 
 .switch-box {

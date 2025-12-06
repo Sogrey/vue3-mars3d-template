@@ -48,8 +48,8 @@ const stackedCardsData = ref([
     image: map1,
     className: 'normal',
     switchConfig: {
-      label: '显示收藏点',
-      value: true,
+      name: '显示收藏点',
+      status: true,
     },
   },
   {
@@ -58,8 +58,8 @@ const stackedCardsData = ref([
     image: map2,
     className: 'earth',
     switchConfig: {
-      label: '开启路网',
-      value: true,
+      name: '开启路网',
+      status: true,
     },
   },
   {
