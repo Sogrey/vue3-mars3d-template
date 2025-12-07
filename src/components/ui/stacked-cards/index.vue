@@ -4,7 +4,7 @@
  * @author Sogrey
  * @date 2025-06-01 00:00:00
  * @lastModify 2025-12-06 00:00:00
- * @version 1.0.2
+ * @version 1.0.3
  * @see 参考百度地图 mapType-wrapper 功能
 -->
 
@@ -49,7 +49,7 @@ interface SwitchConfig {
   /** 开关状态值 */
   status: boolean
   /** 其他额外参数 */
-  [key: string]: any
+  [key: string]: unknown
 }
 
 /**
@@ -67,7 +67,7 @@ interface CardItem {
   /** 开关配置 */
   switchConfig?: SwitchConfig
   /** 其他额外参数 */
-  [key: string]: any
+  [key: string]: unknown
 }
 
 /**

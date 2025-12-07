@@ -128,7 +128,7 @@ interface SwitchConfig {
   /** 开关状态值 */
   status: boolean
   /** 其他额外参数 */
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface CardItem {
@@ -143,7 +143,7 @@ interface CardItem {
   /** 开关配置 */
   switchConfig?: SwitchConfig
   /** 其他额外参数 */
-  [key: string]: any
+  [key: string]: unknown
 }
 ```
 
@@ -303,6 +303,7 @@ MIT License
 
 **版本历史**
 
+- `v1.0.3` - 修复ESLint警告，将any类型改为unknown提升类型安全性
 - `v1.0.2` - 修复卡片排列顺序，改为从左到右按数据顺序排列
 - `v1.0.1` - 修复动画时间同步问题，更新类型定义(label→name, value→status)
 - `v1.0.0` - 初始版本发布

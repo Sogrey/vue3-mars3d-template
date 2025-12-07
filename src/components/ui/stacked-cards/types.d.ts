@@ -3,8 +3,8 @@
  * 堆叠卡片组件类型定义文件
  * @author Sogrey
  * @date 2025-06-01 00:00:00
- * @lastModify 2025-11-08 00:00:00
- * @version 1.0.0
+ * @lastModify 2025-12-06 00:00:00
+ * @version 1.0.3
  * @see 参考百度地图 mapType-wrapper 功能
  */
 
@@ -15,12 +15,12 @@
  * 开关配置接口定义
  * @property {string} name - 开关标签文本
  * @property {boolean} status - 开关状态值
- * @property {any} [key: string] - 其他额外参数（可选）
+ * @property {unknown} [key: string] - 其他额外参数（可选）
  */
 declare interface SwitchConfig {
   name: string
   status: boolean
-  [key: string]: any
+  [key: string]: unknown
 }
 
 /**
@@ -31,7 +31,7 @@ declare interface SwitchConfig {
  * @property {string} image - 卡片背景图片路径
  * @property {string} [className] - 卡片样式类名（可选）
  * @property {SwitchConfig} [switchConfig] - 开关配置（可选）
- * @property {any} [key: string] - 其他额外参数（可选）
+ * @property {unknown} [key: string] - 其他额外参数（可选）
  */
 declare interface CardItem {
   id: string
@@ -39,5 +39,5 @@ declare interface CardItem {
   image: string
   className?: string
   switchConfig?: SwitchConfig
-  [key: string]: any
+  [key: string]: unknown
 }
