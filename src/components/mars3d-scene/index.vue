@@ -74,6 +74,8 @@ export default defineComponent({
     onMounted(() => {
       console.log('onMounted', props.mapOptions)
       MarsEnging.getInstance().init(withKeyId, props.mapOptions)
+
+      window.map3d = MarsEnging.getInstance()
     })
 
     /**

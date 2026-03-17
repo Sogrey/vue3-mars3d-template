@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@turf/turf": "^7.2.0",
+    "@tweenjs/tween.js": "^25.0.0",
     "mars3d": "^3.10.8",
     "mars3d-cesium": "^1.135.0",
     "mars3d-space": "^3.10.8",
