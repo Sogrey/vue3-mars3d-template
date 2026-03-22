@@ -324,7 +324,6 @@ export default class Camera {
     const m = views.length - 1
     const tweens: Tween<Record<string, unknown>>[] = []
 
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this
 
     for (let i = 0; i < m; i++) {
@@ -415,7 +414,6 @@ export default class Camera {
             // 漫游已停止时直接返回
             if (!that._isRoaming) return
 
-            console.log('[Roaming] tween', i, 'completed, starting next')
             // 使用当前 Cesium 时间启动下一个 tween
             const map = that.map
             if (map) {
